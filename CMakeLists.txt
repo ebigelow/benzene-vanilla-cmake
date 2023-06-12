@@ -12,11 +12,25 @@ add_definitions(-DABS_TOP_SRCDIR="${top_srcdir}"
         )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -O3 -Wconversion -Wextra")
-if (${APPLE}) 
+if (${APPLE})
     message("using -stdlib=libc++")
     set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++ -O3 -Wconversion -Wextra")
     set(CMAKE_EXE_LINKER_FLAGS "-stdlib=libc++")
 endif()
+
+
+#######
+# https://medium.com/@mrlauriegray/working-with-external-libraries-in-c-is-extremely-simple-all-you-have-to-do-is-declare-a-path-4d48905fd680
+#include_directories(/usr/local/include)
+#link_directories(/usr/local/lib)
+#set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /usr/local/lib)
+include_directories(/usr/local/opt/berkeley-db/include)
+link_directories(/usr/local/opt/berkeley-db/lib)
+#target_link_directories(berkeley-db /usr/local/opt/berkeley-db/lib)
+set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /usr/local/opt/berkeley-db)
+#target_link_libraries(${top_srcdir}/src/hex db)
+#######
+
 
 add_subdirectory(src)
 
