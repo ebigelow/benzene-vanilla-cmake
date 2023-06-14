@@ -57,7 +57,7 @@ run_tournament()
 
     mkdir -p $DIRECTORY
 
-    ./twogtp.py \
+    /Users/eric/.pyenv/shims/python2.7 ./twogtp.py \
         --type $TYPE \
         --dir "$DIRECTORY" \
         --openings $OPENINGS \

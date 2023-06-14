@@ -111,7 +111,10 @@ class GamePlayer:
         t = time.localtime()
         sgfDate = time.strftime("%Y-%m-%d", t)
         longDate = time.strftime("%Y-%m-%d %X %Z", t)
-        hostname = socket.gethostbyaddr(socket.gethostname())[0]
+        try:
+            hostname = socket.gethostbyaddr(socket.gethostname())[0]
+        except:    # https://stackoverflow.com/a/71167082/4248948
+            hostname = 'UnknownHost'
         result = self._mergeResults(resultBlack, resultWhite)
         f = open(fileName, "w")
         f.write("(\n;" \

@@ -100,6 +100,8 @@ class Program:
                 answer += line
         if answer[0] != '=':
             self._denyReason = string.strip(answer[2:])
+
+            import ipdb; ipdb.set_trace()
             raise Program.CommandDenied
         if numberLines == 1:
             return string.strip(answer[1:])
@@ -114,4 +116,6 @@ class Program:
     def _programDied(self):
         self._isDead = 1
         self._logStdErr()
+        
+        import ipdb; ipdb.set_trace()
         raise Program.Died
