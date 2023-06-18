@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------------
 
 import os, string, time, random
+from tqdm import trange
 
 from program import Program 
 from game import Game
@@ -209,11 +210,6 @@ class Tournament:
             
         return game
 
-#----------------------------------------------------------------------------
-
-# Plays a standard iterative tournament:
-#   For each round, each program takes each opening as black.
-class IterativeTournament(Tournament):
     def loadOpenings(self, openings):
         if (openings != ''):
             self._openings = []
@@ -223,10 +219,17 @@ class IterativeTournament(Tournament):
             for line in lines:
                 self._openings.append(string.strip(line))
 
+
+#----------------------------------------------------------------------------
+
+# Plays a standard iterative tournament:
+#   For each round, each program takes each opening as black.
+class IterativeTournament(Tournament):
+
     def playTournament(self):
         gamesPerRound = 2*len(self._openings);
         first = self._resultsFile.getLastIndex() + 1
-        for i in range(first, self._rounds*gamesPerRound):
+        for i in trange(first, self._rounds*gamesPerRound):
             currentRound = i / gamesPerRound;
             gameInRound = i % gamesPerRound;
             openingIndex = gameInRound / 2;
@@ -252,7 +255,10 @@ class IterativeTournament(Tournament):
 #     if round is even, program one takes black, otherwise
 #     program two takes black.
 class RandomTournament(Tournament):
-    def loadOpenings(self, openings):
+    # EB: this is the original weighted version, where each opening has a probability
+    #     but idk what the file format is, and for now we can just use uniform
+    """
+    def loadOpenings(self, openings):     
         if (openings != ''):
             self._openings = []
             f = open(openings, 'r')
@@ -267,6 +273,13 @@ class RandomTournament(Tournament):
                 self._openings.append([sum, moves])
             self._maxWeight = sum;
             print self._openings;
+
+    """
+    def loadOpenings(self, openings):
+        # EB: simple uniform prior over openings
+        Tournament.loadOpenings(self, openings)
+        self._openings = [[i+1, o] for i, o in enumerate(self._openings)]
+        self._maxWeight = len(self._openings)
             
     def pickOpening(self):
         randomWeight = random.random() * self._maxWeight;
@@ -277,7 +290,7 @@ class RandomTournament(Tournament):
         
     def playTournament(self):
         first = self._resultsFile.getLastIndex() + 1
-        for currentRound in range(first, self._rounds):
+        for currentRound in trange(first, self._rounds):
             opening = self.pickOpening();
             if ((currentRound % 2) == 0):
                 self.playGame(currentRound, currentRound,

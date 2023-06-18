@@ -1,9 +1,8 @@
 # ----------------------------------------
 # Parameters
 SIZE=8
-ROUNDS=1
-OPENINGS=""
-TYPE="iterative"
+ROUNDS=2
+TYPE="random"  #"iterative"
 
 PROGRAM1="../build/src/mohex/mohex"
 CONFIG1="config8.htp"  #"mohex-cg2010.htp"
@@ -26,7 +25,8 @@ if [ $NAME1 == $NAME2 ]; then
     NAME2=$NAME2"-b"
 fi
 
-DIRECTORY="jobs/"$SIZE"x"$SIZE"-"$NAME1"-vs-"$NAME2
+#DIRECTORY="jobs/"$SIZE"x"$SIZE"-"$NAME1"-vs-"$NAME2
+DIRECTORY="jobs/"$(date +"%Y-%m-%d_%H:%M:%S")
 mkdir -p $DIRECTORY
 
 # Run the tournament. 
@@ -36,4 +36,5 @@ mkdir -p $DIRECTORY
     --openings $OPENINGS \
     --size $SIZE --rounds $ROUNDS \
     --p1cmd "$PROGRAM1 --config $CONFIG1" --p1name $NAME1 \
-    --p2cmd "$PROGRAM2 --config $CONFIG2" --p2name $NAME2
+    --p2cmd "$PROGRAM2 --config $CONFIG2" --p2name $NAME2 \
+    --quiet

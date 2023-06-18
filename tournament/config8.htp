@@ -1,13 +1,16 @@
 # size-8 (perfect??) solver
 param_game allow_swap 1
 param_mohex max_memory 32000000000
-param_mohex num_threads 8
+param_mohex num_threads 15
 param_mohex max_time 96
-##param_mohex max_games 3
 param_mohex knowledge_threshold 0
-##param_mohex reuse_subtree 1
 param_mohex use_parallel_solver 1
-param_dfpn threads 8
+param_dfpn threads 15
+
+
+
+##param_mohex max_games 3
+##param_mohex reuse_subtree 1
 ####param_mohex use_livegfx 1
 ####param_mohex livegfx_interval 100000
 ####book-open 11x11-book.db
